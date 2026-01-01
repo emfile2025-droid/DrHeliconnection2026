@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鹿児島県ドクターヘリ 施設間搬送要請ポータル</title>
+<meta name="description" content="鹿児島県ドクターヘリおよび基地病院救急科への施設間搬送要請ポータルサイト。医療従事者専用ログインページ。">
+<meta name="robots" content="index, follow">
+
+<meta property="og:title" content="鹿児島県ドクターヘリ要請ポータル (医療従事者専用)">
+<meta property="og:type" content="website">
+<meta property="og:description" content="施設間搬送要請フォームへのアクセスには認証コードが必要です。">
+<meta property="og:image" content="20260101heli.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --text-main: #333;
+        --accent-blue: #0056b3;
+        --accent-hover: #003d80;
+        --warning-red: #d32f2f;
+        --header-height: 70px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: 'Noto Sans JP', sans-serif;
+        color: var(--text-main);
+        background-color: #000;
+        line-height: 1.6;
+        overflow-x: hidden;
+    }
+
+    /* ヘッダー */
+    header {
+        position: fixed;
+        top: 0; left: 0; width: 100%;
+        height: var(--header-height);
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(5px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        z-index: 1000;
+    }
+
+    .site-logo {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: #333;
+        font-weight: 700;
+        font-size: 16px;
+    }
+
+    .logo-img {
+        height: 50px;
+        width: 50px;
+        object-fit: contain;
+        background: #000;
+        border-radius: 4px;
+        margin-right: 12px;
+    }
+
+    .menu-link {
+        font-size: 14px;
+        color: var(--text-main);
+        text-decoration: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: background 0.2s;
+    }
+    .menu-link:hover { background: #f0f0f0; }
+
+    /* ヒーローエリア */
+    .hero {
+        position: relative;
+        height: 100vh;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+    }
+
+    .hero-video {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        object-fit: cover;
+        z-index: 0;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%);
+        z-index: 1;
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+        padding: 20px;
+        width: 100%;
+        max-width: 800px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        text-shadow: 0 4px 15px rgba(0,0,0,0.7);
+        margin-bottom: 20px;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+        opacity: 0.9;
+        margin-bottom: 40px;
+    }
+
+    /* 認証カード */
+    .auth-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 40px;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 480px;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        transition: transform 0.3s;
+    }
+    
+    .auth-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; color: #fff; }
+
+    .passcode-area { display: flex; flex-direction: column; gap: 15px; }
+    
+    .passcode-input {
+        width: 100%; padding: 12px 15px; font-size: 16px; border: none;
+        border-radius: 8px; background: rgba(255,255,255,0.95);
+        color: #333; text-align: center; letter-spacing: 3px;
+    }
+    .passcode-input:focus { outline: 3px solid var(--accent-blue); }
+
+    .btn-unlock {
+        background: var(--accent-blue); color: white; font-weight: bold;
+        padding: 12px; border: none; border-radius: 8px; font-size: 16px;
+        cursor: pointer; transition: background 0.2s; width: 100%;
+    }
+    .btn-unlock:hover { background: var(--accent-hover); }
+
+    .error-msg {
+        color: #ff5252; font-size: 13px; font-weight: bold;
+        display: none; margin-top: 5px; text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+    }
+
+    /* ボタンのみ版のデザイン（コメントアウト中） */
+    .glass-card {
+        display: flex; flex-direction: column; align-items: center;
+        background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px);
+        padding: 40px; border-radius: 16px; width: 100%; max-width: 500px;
+        text-decoration: none; color: var(--text-main);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .glass-card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.95); }
+    .card-icon { font-size: 40px; margin-bottom: 15px; background: #e3f2fd; width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-blue); }
+    .card-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; color: var(--accent-blue); }
+    .card-desc { font-size: 14px; color: #555; margin-bottom: 25px; }
+    .action-btn { background: var(--accent-blue); color: white; padding: 12px 40px; border-radius: 30px; font-weight: bold; display: flex; align-items: center; gap: 8px; }
+
+    /* フッター */
+    footer {
+        position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px;
+        text-align: center; color: rgba(255,255,255,0.7); font-size: 11px; z-index: 10;
+        background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    }
+    footer a { color: rgba(255,255,255,0.9); text-decoration: none; margin: 0 10px; }
+
+    @media (max-width: 768px) { .hero-title { font-size: 1.8rem; } }
+</style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="site-logo">
+        <img src="heli_illust.png" alt="Logo" class="logo-img">
+        <div>
+            <div style="font-size:11px; color:#666;">DocHeli Portal</div>
+            鹿児島県ドクターヘリ基地病院
+        </div>
+    </a>
+    <nav>
+        <a href="利用規約.html" class="menu-link">規約・ポリシー</a>
+    </nav>
+</header>
+
+<section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline poster="20260101heli.png">
+        <source src="heli_movie.mp4" type="video/mp4">
+        <img src="20260101heli.png" alt="" style="width:100%; height:100%; object-fit:cover;">
+    </video>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <h1 class="hero-title">施設間搬送要請ポータル</h1>
+        <p class="hero-subtitle">Authorized Personnel Access Only</p>
+
+        <div class="auth-card">
+            <div class="auth-title">🔒 関係者認証 (Medical Auth)</div>
+            <p style="font-size:13px; margin-bottom:15px; color:#ddd;">
+                搬送要請フォームへ進むには、共有パスコードを入力してください。
+            </p>
+            
+            <div class="passcode-area">
+                <input type="password" id="passcodeInput" class="passcode-input" placeholder="Passcode" onkeypress="handleEnter(event)">
+                <div id="errorMsg" class="error-msg">⚠ パスコードが間違っています</div>
+                <button type="button" class="btn-unlock" onclick="checkPasscode()">認証して進む ➜</button>
+            </div>
+        </div>
+
+        </div>
+</section>
+
+<footer>
+    <div>&copy; 2026 Kagoshima Doctor Heli Base Hospital</div>
+    <div style="margin-top:5px;">
+        <a href="利用規約.html">利用規約</a> | 
+        <a href="利用規約.html">プライバシーポリシー</a>
+    </div>
+</footer>
+
+<script>
+    // ==========================================
+    // 【設定】パスコード設定 (初期値: 9999)
+    // ==========================================
+    const SECRET_CODE = "9999"; 
+    const LINK_URL = "施設間.html";
+
+    function checkPasscode() {
+        const input = document.getElementById('passcodeInput');
+        const error = document.getElementById('errorMsg');
+        const btn = document.querySelector('.btn-unlock');
+
+        if (input.value === SECRET_CODE) {
+            // 正解
+            error.style.display = 'none';
+            input.style.borderColor = '#4caf50';
+            btn.textContent = "認証成功...移動中";
+            btn.style.background = "#4caf50";
+            setTimeout(() => { window.location.href = LINK_URL; }, 500);
+        } else {
+            // 不正解
+            error.style.display = 'block';
+            input.value = "";
+            input.focus();
+            // 振動エフェクト
+            const card = document.querySelector('.auth-card');
+            card.style.transform = "translateX(5px)";
+            setTimeout(() => card.style.transform = "translateX(-5px)", 50);
+            setTimeout(() => card.style.transform = "translateY(0)", 100);
+        }
+    }
+
+    function handleEnter(e) { if(e.key === 'Enter') checkPasscode(); }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鹿児島県ドクターヘリ 施設間搬送要請フォーム</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+
+    :root {
+        --primary: #0056b3;
+        --primary-light: #e3f2fd;
+        --accent: #d32f2f;
+        --bg-body: #f5f5f5;
+        --border: #ddd;
+        --text: #333;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+        font-family: 'Noto Sans JP', sans-serif;
+        color: var(--text);
+        background-color: var(--bg-body);
+        line-height: 1.4;
+        padding: 15px;
+    }
+
+    /* メインコンテナ */
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: white;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    header {
+        text-align: center;
+        border-bottom: 3px solid var(--primary);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    h1 { font-size: 22px; color: var(--primary); margin-bottom: 5px; }
+    .subtitle { font-size: 13px; color: #666; }
+
+    .step-box {
+        border: 2px solid var(--primary);
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 15px;
+        background: white;
+    }
+
+    .step-header {
+        display: flex;
+        align-items: center;
+        background: var(--primary-light);
+        padding: 6px 10px;
+        border-radius: 4px;
+        margin-bottom: 12px;
+        font-weight: 700;
+        color: var(--primary);
+        font-size: 15px;
+    }
+
+    .step-num {
+        background: var(--primary);
+        color: white;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 8px;
+        font-size: 14px;
+    }
+
+    .arrow-down {
+        text-align: center;
+        color: var(--primary);
+        font-size: 20px;
+        margin: -8px 0 8px;
+        font-weight: bold;
+    }
+
+    /* フォーム周り */
+    .form-section {
+        margin-bottom: 12px;
+        padding: 12px;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        background-color: #fdfdfd;
+    }
+
+    .section-title {
+        font-size: 14px;
+        font-weight: bold;
+        color: #004085;
+        border-bottom: 2px solid #cce5ff;
+        margin-bottom: 10px;
+        padding-bottom: 3px;
+    }
+
+    .form-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 12px;
+        align-items: flex-end;
+    }
+
+    .form-group {
+        flex: 1;
+        min-width: 140px;
+    }
+
+    label {
+        display: block;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 4px;
+        color: #444;
+    }
+
+    input[type="text"], input[type="number"], select, textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+        border-color: var(--primary);
+        outline: none;
+        background-color: #f0f8ff;
+    }
+
+    /* 数値入力のエラー状態 */
+    input:invalid {
+        border-color: var(--accent);
+        background-color: #fff0f0;
+    }
+
+    textarea { height: 60px; resize: vertical; }
+
+    /* 生年月日エリア */
+    .dob-wrapper {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        flex-wrap: wrap; 
+    }
+    .dob-select {
+        padding: 6px 2px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        text-align: center;
+        font-size: 14px;
+    }
+    #dobEra { width: 75px; }
+    #dobYear { width: 55px; }
+    #dobMonth { width: 50px; }
+    #dobDay { width: 50px; }
+    #ptAge { 
+        width: 60px !important; 
+        min-width: 50px; 
+        text-align: center; 
+        background: #eee;
+        padding: 6px 2px;
+    }
+
+    /* バイタルエリア */
+    .vital-wrapper {
+        background-color: #e8f4fd;
+        padding: 12px;
+        border-radius: 6px;
+        border: 1px solid #b8daff;
+    }
+    
+    .vital-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 8px;
+    }
+    
+    .vital-item {
+        flex: 1;
+        min-width: 90px;
+    }
+    
+    .vital-item label {
+        font-size: 11px;
+        color: #0056b3;
+        margin-bottom: 2px;
+    }
+
+    select.vital-select {
+        padding: 6px;
+        padding-right: 20px;
+    }
+
+    /* 呼吸器パネル */
+    .detail-panel {
+        display: none;
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px;
+        border-radius: 4px;
+        margin-top: 5px;
+        font-size: 13px;
+    }
+    .detail-panel.active { display: block; animation: fadeIn 0.3s; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .resp-setting-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+        gap: 8px;
+    }
+    .resp-input-label { font-size: 10px; color: #555; }
+    .resp-input { padding: 4px; font-size: 13px; }
+
+    /* 薬剤リスト (グリッド化してコンパクトに) */
+    .drug-list { display: flex; flex-direction: column; gap: 10px; }
+    
+    .drug-category {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 8px;
+    }
+    .drug-category:last-child { border-bottom: none; }
+
+    .category-label {
+        font-size: 12px;
+        color: #0056b3;
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    .drug-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 幅に合わせて自動折り返し */
+        gap: 6px;
+    }
+
+    .drug-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 6px;
+        border: 1px solid #f0f0f0;
+        border-radius: 4px;
+        background: #fff;
+        transition: all 0.2s;
+        font-size: 13px;
+    }
+    
+    /* チェックされたアイテムのスタイル */
+    .drug-item:has(input:checked) {
+        border-color: #b8daff;
+        background-color: #e8f4fd;
+    }
+
+    .drug-item label {
+        margin: 0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+    .drug-item input[type="checkbox"] {
+        margin-right: 5px;
+        transform: scale(1.1);
+    }
+
+    /* 入力欄表示制御 */
+    .drug-input-area { 
+        display: none; 
+        flex: 1; 
+        margin-left: 5px;
+    }
+    .rate-input { 
+        width: 100% !important; 
+        padding: 4px !important; 
+        font-size: 12px !important; 
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        height: 26px;
+    }
+
+    /* 警告 */
+    .alert-box {
+        display: none;
+        background-color: #fff3cd;
+        color: #856404;
+        border: 1px solid #ffeeba;
+        padding: 8px;
+        margin-top: 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 13px;
+    }
+    
+    /* 付添人警告用 */
+    .warning-text-box {
+        display: none;
+        background-color: #ffebee;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 1.5;
+    }
+
+    /* 選択肢グループ */
+    .selection-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .check-label {
+        display: inline-flex;
+        align-items: center;
+        background: #eee;
+        padding: 6px 10px;
+        border-radius: 16px;
+        cursor: pointer;
+        font-size: 13px;
+        border: 1px solid #ddd;
+        user-select: none;
+    }
+    .check-label:hover { background: #e2e6ea; }
+    .check-label input { margin-right: 6px; transform: scale(1.1); }
+    .check-label:has(input:checked) {
+        background: #cce5ff;
+        border-color: #b8daff;
+        color: #004085;
+        font-weight: bold;
+    }
+
+    .input-wrapper {
+        background: #f8f9fa;
+        padding: 8px;
+        border-radius: 6px;
+        border: 1px solid #eee;
+        margin-bottom: 8px;
+    }
+    .input-wrapper-title {
+        font-size: 12px;
+        font-weight: bold;
+        color: #0056b3;
+        margin-bottom: 6px;
+        border-left: 3px solid #0056b3;
+        padding-left: 6px;
+        background: #eef;
+    }
+
+    /* ボタンエリア */
+    .action-area {
+        text-align: center;
+        margin-top: 15px;
+        padding: 15px;
+        background: #f0f8ff;
+        border-radius: 8px;
+        border: 2px dashed var(--primary);
+    }
+    .btn-send {
+        background-color: var(--primary);
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 12px 40px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+    }
+    .btn-send:hover { background-color: #003d80; }
+    .btn-copy {
+        background-color: #6c757d;
+        color: white;
+        font-size: 13px;
+        padding: 6px 15px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 8px;
+    }
+    .status-message { margin-top: 8px; font-weight: bold; color: var(--accent); min-height: 1.4em; }
+    .decision-info {
+        background: #fff3e0;
+        border: 1px solid #ffcc80;
+        padding: 8px;
+        border-radius: 4px;
+        text-align: center;
+        font-weight: bold;
+        color: #e65100;
+        margin-top: 12px;
+        font-size: 14px;
+    }
+    .red-text { color: var(--accent); }
+
+    @media print {
+        body { padding: 0; background: white; }
+        .container { box-shadow: none; padding: 0; max-width: 100%; }
+        .btn-send, .btn-copy, .alert-box { display: none; }
+        .action-area { border: none; background: white; text-align: left; padding: 0; }
+        .detail-panel { display: block !important; border: none; padding: 0; }
+        .drug-input-area { display: flex !important; }
+        .warning-text-box { display: block !important; border: none; color: black; padding: 0; background: none; }
+        #drainSetting { display: inline-block !important; }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>鹿児島県ドクターヘリ 施設間搬送要請フォーム</h1>
+        <div class="subtitle">Web入力・送信システム</div>
+    </header>
+
+    <!-- STEP 1 -->
+    <div class="step-box">
+        <div class="step-header">
+            <span class="step-num">1</span>
+            <span>搬送先の確保（受け入れ調整）</span>
+        </div>
+        <div style="padding-left: 10px;">
+            <p style="font-size:14px;">まず搬送元医療機関から搬送先医療機関へ連絡し、<strong>「受け入れ受諾」</strong>を得てください。</p>
+            <p class="red-text" style="font-size: 12px; margin-top: 5px;">※ドクターヘリ本部（CS）ではベッド調整は行いません。</p>
+        </div>
+    </div>
+
+    <div class="arrow-down">⬇</div>
+
+    <!-- STEP 2: INPUT FORM -->
+    <div class="step-box">
+        <div class="step-header">
+            <span class="step-num">2</span>
+            <span>患者情報の入力・送信（CSへ連絡）</span>
+        </div>
+        
+        <p style="margin-bottom: 12px; font-size: 13px;">以下の情報を入力し、「メール作成」ボタンを押してください。患者氏名や住所など個人を特定しうる情報は記入しないでください。</p>
+
+        <form id="heliRequestForm">
+            <!-- ① 搬送元・搬送先情報 -->
+            <div class="form-section">
+                <div class="section-title">① 搬送元・搬送先情報</div>
+                
+                <!-- 搬送元 -->
+                <div style="margin-bottom: 10px; border: 1px solid #cce5ff; padding: 8px; border-radius: 4px; background: #f0f8ff;">
+                    <label style="color:#004085; font-weight:bold; border-bottom:1px solid #b8daff; display:block; margin-bottom:6px;">【搬送元】</label>
+                    <div class="form-row" style="margin-bottom:0; gap:8px;">
+                        <div class="form-group" style="flex:2;">
+                            <label>医療機関名</label>
+                            <input type="text" id="srcHospital" placeholder="例：〇〇病院">
+                        </div>
+                        <div class="form-group" style="flex:1;">
+                            <label>診療科</label>
+                            <input type="text" id="srcDept" placeholder="例：救急科">
+                        </div>
+                        <div class="form-group" style="flex:1;">
+                            <label>担当医名</label>
+                            <input type="text" id="srcDoctor" placeholder="氏名">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 搬送先 -->
+                <div style="border: 1px solid #ffeeba; padding: 8px; border-radius: 4px; background: #fff3cd;">
+                    <label style="color:#856404; font-weight:bold; border-bottom:1px solid #ffeeba; display:block; margin-bottom:6px;">【搬送先】 (受入医療機関)</label>
+                    <div class="form-row" style="margin-bottom:0; gap:8px;">
+                        <div class="form-group" style="flex:2;">
+                            <label>医療機関名</label>
+                            <input type="text" id="dstHospital" placeholder="例：鹿児島市立病院">
+                        </div>
+                        <div class="form-group" style="flex:1;">
+                            <label>診療科</label>
+                            <input type="text" id="dstDept" placeholder="例：救急科">
+                        </div>
+                        <div class="form-group" style="flex:1;">
+                            <label>担当医名</label>
+                            <input type="text" id="dstDoctor" placeholder="氏名">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ② 患者基本属性 -->
+            <div class="form-section">
+                <div class="section-title">② 患者基本属性</div>
+                
+                <div class="form-row">
+                    <!-- 年齢入力 (ダイヤル式) -->
+                    <div class="form-group" style="flex: 1; min-width: 120px;">
+                        <label>年齢 (選択)</label>
+                        <div style="display:flex; align-items:center;">
+                            <select id="ptAge" class="vital-select" style="width: 80px; text-align:center; font-size:16px; padding:8px;"></select>
+                            <span style="margin-left:5px; font-weight:bold;">代</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" style="flex: 1; min-width: 120px;">
+                        <label>性別</label>
+                        <div class="selection-group">
+                            <label class="check-label"><input type="radio" name="ptGender" value="男性" checked> 男</label>
+                            <label class="check-label"><input type="radio" name="ptGender" value="女性"> 女</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="flex: 1.5; min-width: 200px;">
+                        <label>付添人（家族等）</label>
+                        <div class="selection-group">
+                            <label class="check-label"><input type="radio" name="escort" value="なし" checked onchange="toggleEscortWarning()"> なし</label>
+                            <label class="check-label"><input type="radio" name="escort" value="あり" onchange="toggleEscortWarning()"> あり</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 付添人警告 -->
+                <div id="escortWarning" class="warning-text-box">
+                    ⚠ <strong>日本航空医療学会では、家族は原則搭乗させない方針であり、鹿児島県ドクターヘリも原則、家族搭乗は行っておりません。</strong>
+                </div>
+            </div>
+
+            <!-- ③ 病態・経過・バイタル -->
+            <div class="form-section">
+                <div class="section-title">③ 病態・臨床経過・バイタル</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>診断名（病名）</label>
+                        <input type="text" id="diagnosis" placeholder="例：急性心筋梗塞、脳出血、多発外傷など">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>臨床経過（発症時間、現状など）</label>
+                        <textarea id="history" placeholder="例：本日10時頃発症、意識レベル低下あり当院搬送..."></textarea>
+                    </div>
+                </div>
+                
+                <!-- バイタルサイン入力エリア -->
+                <div class="input-wrapper vital-wrapper">
+                    <span class="input-wrapper-title" style="background:none; border:none; padding:0; margin-bottom:8px;">
+                        ■ バイタルサイン <span style="font-weight:normal; font-size:11px; color:#555;">(クリックして変更)</span>
+                    </span>
+                    
+                    <div class="vital-row">
+                        <div class="vital-item" style="flex: 1.5; min-width: 160px;">
+                            <label>血圧 (mmHg)</label>
+                            <div style="display:flex; align-items:center; gap:5px;">
+                                <select id="bpSys" class="vital-select" style="width: 70px;"></select> / 
+                                <select id="bpDia" class="vital-select" style="width: 70px;"></select>
+                            </div>
+                        </div>
+                        <div class="vital-item">
+                            <label>脈拍 <span class="vital-unit">(bpm)</span></label>
+                            <select id="hr" class="vital-select"></select>
+                        </div>
+                        <div class="vital-item">
+                            <label>SpO2 <span class="vital-unit">(%)</span></label>
+                            <select id="spo2" class="vital-select"></select>
+                        </div>
+                        <div class="vital-item">
+                            <label>呼吸数 <span class="vital-unit">(回/分)</span></label>
+                            <select id="rr" class="vital-select"></select>
+                        </div>
+                    </div>
+                    
+                    <div class="vital-row">
+                         <div class="vital-item" style="flex: 2; min-width: 180px;">
+                            <label>意識レベル</label>
+                            <div style="display:flex; gap:5px; align-items:center;">
+                                <select id="consciousLevel" class="vital-select" style="flex:1;">
+                                    <option value="JCS 0 (清明)">JCS 0 (清明)</option>
+                                    <option value="JCS 1">JCS 1</option>
+                                    <option value="JCS 2">JCS 2</option>
+                                    <option value="JCS 3">JCS 3</option>
+                                    <option value="JCS 10">JCS 10</option>
+                                    <option value="JCS 20">JCS 20</option>
+                                    <option value="JCS 30">JCS 30</option>
+                                    <option value="JCS 100">JCS 100</option>
+                                    <option value="JCS 200">JCS 200</option>
+                                    <option value="JCS 300">JCS 300</option>
+                                    <option value="鎮静中">鎮静中</option>
+                                    <option value="その他">その他</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="vital-item" style="flex: 1; min-width: 100px;">
+                            <label>体温 <span class="vital-unit">(℃)</span></label>
+                            <select id="temp" class="vital-select"></select>
+                        </div>
+                    </div>
+                    <div style="margin-top:5px;">
+                        <input type="text" id="vitalOther" placeholder="その他・詳細（GCS E4V5M6、測定不能など）" style="font-size:12px; padding:5px;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- ④ 医療処置 -->
+            <div class="form-section">
+                <div class="section-title">④ 現在の医療処置</div>
+                
+                <!-- 呼吸管理 -->
+                <div class="input-wrapper">
+                    <span class="input-wrapper-title">■ 呼吸管理</span>
+                    <div class="selection-group" style="margin-bottom: 5px;">
+                        <label class="check-label"><input type="radio" name="respMode" value="室内気" checked onclick="toggleRespSettings('room')"> 室内気</label>
+                        <label class="check-label"><input type="radio" name="respMode" value="酸素投与" onclick="toggleRespSettings('o2')"> 酸素投与</label>
+                        <label class="check-label"><input type="radio" name="respMode" value="NPPV" onclick="toggleRespSettings('nppv')"> NPPV</label>
+                        <label class="check-label"><input type="radio" name="respMode" value="挿管・人工呼吸器" onclick="toggleRespSettings('vent')"> 挿管・人工呼吸器</label>
+                    </div>
+
+                    <!-- 酸素投与詳細 -->
+                    <div id="panel-o2" class="detail-panel">
+                        <label>酸素流量・デバイス:</label>
+                        <select id="o2Flow">
+                            <option value="">選択してください</option>
+                            <option value="カニューラ 0.5L">カニューラ 0.5L</option>
+                            <option value="カニューラ 1L">カニューラ 1L</option>
+                            <option value="カニューラ 2L">カニューラ 2L</option>
+                            <option value="カニューラ 3L">カニューラ 3L</option>
+                            <option value="カニューラ 4L">カニューラ 4L</option>
+                            <option value="マスク 5L">マスク 5L</option>
+                            <option value="マスク 6L">マスク 6L</option>
+                            <option value="マスク 8L">マスク 8L</option>
+                            <option value="マスク 10L">マスク 10L</option>
+                            <option value="リザーバー付マスク 10L">リザーバー付マスク 10L</option>
+                            <option value="リザーバー付マスク 15L">リザーバー付マスク 15L</option>
+                        </select>
+                    </div>
+
+                    <!-- NPPV詳細（分離） -->
+                    <div id="panel-nppv" class="detail-panel">
+                        <label style="margin-bottom:5px;">NPPV設定:</label>
+                        <div class="resp-setting-grid">
+                            <div>
+                                <div class="resp-input-label">Mode</div>
+                                <select id="nppvMode" class="resp-input">
+                                    <option value="">選択</option>
+                                    <option value="S/T">S/T</option>
+                                    <option value="CPAP">CPAP</option>
+                                    <option value="その他">その他</option>
+                                </select>
+                            </div>
+                            <div>
+                                <div class="resp-input-label">FiO2 (0.21-1.0)</div>
+                                <input type="number" id="nppvFio2" class="resp-input" placeholder="0.4" step="0.01" min="0.21" max="1.0">
+                            </div>
+                            <div><div class="resp-input-label">IPAP</div><input type="number" id="nppvIpap" class="resp-input" placeholder="10" min="0"></div>
+                            <div><div class="resp-input-label">EPAP</div><input type="number" id="nppvEpap" class="resp-input" placeholder="5" min="0"></div>
+                            <div><div class="resp-input-label">f (回/分)</div><input type="number" id="nppvF" class="resp-input" placeholder="12" min="0"></div>
+                        </div>
+                    </div>
+
+                    <!-- 人工呼吸器詳細（分離） -->
+                    <div id="panel-vent" class="detail-panel">
+                        <label style="margin-bottom:5px;">呼吸器設定:</label>
+                        <div class="resp-setting-grid">
+                            <div>
+                                <div class="resp-input-label">Mode</div>
+                                <select id="ventMode" class="resp-input">
+                                    <option value="">選択</option>
+                                    <option value="A/C">A/C</option>
+                                    <option value="PSV">PSV</option>
+                                    <option value="SIMV">SIMV</option>
+                                    <option value="APRV">APRV</option>
+                                    <option value="その他">その他</option>
+                                </select>
+                            </div>
+                            <div>
+                                <div class="resp-input-label">FiO2 (0.21-1.0)</div>
+                                <input type="number" id="ventFio2" class="resp-input" placeholder="0.4" step="0.01" min="0.21" max="1.0">
+                            </div>
+                            <div><div class="resp-input-label">PEEP</div><input type="number" id="ventPeep" class="resp-input" placeholder="5" min="0"></div>
+                            <div><div class="resp-input-label">PS</div><input type="number" id="ventPs" class="resp-input" placeholder="10" min="0"></div>
+                            <div><div class="resp-input-label">PI/Pinsp</div><input type="number" id="ventPi" class="resp-input" placeholder="15" min="0"></div>
+                            <div><div class="resp-input-label">f (回/分)</div><input type="number" id="ventF" class="resp-input" placeholder="12" min="0"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 循環・薬剤 -->
+                <div class="input-wrapper">
+                    <span class="input-wrapper-title">■ 循環・薬剤</span>
+                    
+                    <!-- メイン輸液 -->
+<span>※メインは50mlシリンジポンプへ切り替えてください</span>
+                    <div style="margin-bottom:10px; border-bottom:1px solid #eee; padding-bottom:10px;">
+                        <label style="font-size:12px; color:#555;">メイン輸液:</label>
+                        <div style="display:flex; gap:5px; flex-wrap:wrap;">
+                            <select id="mainIvType" style="flex:1; min-width:150px;">
+                                <option value="なし">なし</option>
+                                <option value="細胞外液(生食/リンゲル)">細胞外液(生食/リンゲル)</option>
+                                <option value="維持液(1号/3号)">維持液(1号/3号)</option>
+                                <option value="その他">その他</option>
+                            </select>
+                            <input type="text" id="mainIvRate" placeholder="流量 (例: 80ml/h)" style="flex:1;">
+                        </div>
+                    </div>
+
+                    <!-- シリンジポンプ薬剤等 (グリッド表示) -->
+                    <div class="drug-list">
+                        <!-- 昇圧剤 -->
+                        <div class="drug-category">
+                            <label class="category-label">昇圧剤</label>
+                            <div class="drug-grid">
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="pressor" value="ノルアドレナリン"> ノルアド</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量(γ)"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="pressor" value="イノバン(ドパミン)"> イノバン</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="pressor" value="ドブタミン"> ドブタミン</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="pressor" value="ピトレッシン"> ピトレッシン</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 鎮静剤 -->
+                        <div class="drug-category">
+                            <label class="category-label">鎮静・鎮痛剤</label>
+                            <div class="drug-grid">
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="sedative" value="ミダゾラム"> ミダゾラム</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量(mg/h)"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="sedative" value="プロポフォール"> プロポフォール</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="sedative" value="プレセデックス"> プレセデックス</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="sedative" value="フェンタニル"> フェンタニル</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="sedative" value="モルヒネ"> モルヒネ</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- その他薬剤 -->
+                        <div class="drug-category">
+                            <label class="category-label">その他</label>
+                            <div class="drug-grid">
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="otherDrug" value="ニコランジル"> ニコランジル</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量/詳細"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="otherDrug" value="ニカルジピン"> ニカルジピン</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="otherDrug" value="リドカイン"> リドカイン</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="otherDrug" value="アミオダロン"> アミオダロン</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="otherDrug" value="ヘパリン"> ヘパリン</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="流量"></div>
+                                </div>
+                                <div class="drug-item">
+                                    <label><input type="checkbox" class="drug-check" name="otherDrug" value="その他薬剤"> その他</label>
+                                    <div class="drug-input-area"><input type="text" class="rate-input" placeholder="薬剤名・流量"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 警告メッセージ -->
+                    <div id="pumpWarning" class="alert-box">
+                        ⚠ 警告: シリンジポンプ使用薬剤が多数選択されています。<br>
+                        ヘリ搭載ポンプ数に制限があるため、可能な限り<strong>3剤程度</strong>までに減らすよう調整をお願いします。<br>
+                        詳細はフライトドクターと相談してください。
+                    </div>
+                </div>
+
+                <!-- デバイス -->
+                <div class="input-wrapper">
+                    <span class="input-wrapper-title">■ 留置デバイス</span>
+                    <div class="selection-group" style="margin-bottom: 5px;">
+                        <label class="check-label"><input type="checkbox" name="device" value="Aライン"> Aライン</label>
+                        <label class="check-label"><input type="checkbox" name="device" value="CVC"> CVC</label>
+                        <!-- 胸腔ドレーン：チェックを入れると設定プルダウン表示 -->
+                        <div class="device-item-wrapper" style="display:inline-flex; align-items:center;">
+                            <label class="check-label"><input type="checkbox" name="device" value="胸腔ドレーン" id="chkDrain" onchange="toggleDrainSelect()"> 胸腔ドレーン</label>
+                            <select id="drainSetting" style="display:none; margin-left:5px; width:auto; padding:2px; font-size:12px; border-radius:4px; border:1px solid #ccc;">
+                                <option value="">設定選択</option>
+                                <option value="-5cmH2O">-5cmH2O</option>
+                                <option value="-10cmH2O">-10cmH2O</option>
+                                <option value="-15cmH2O">-15cmH2O</option>
+                                <option value="水封">水封</option>
+                            </select>
+                        </div>
+                        <label class="check-label"><input type="checkbox" name="device" value="IABP"> IABP</label>
+                        <label class="check-label"><input type="checkbox" name="device" value="PCPS/ECMO"> PCPS/ECMO</label>
+                    </div>
+                    <input type="text" id="deviceOther" class="sub-input" placeholder="その他デバイス（ペースメーカー等）">
+                </div>
+            </div>
+
+            <!-- 送信アクション -->
+            <div class="action-area">
+                <button type="button" class="btn-send" onclick="generateAndSendMail()">
+                    📧 メール作成画面を起動<br>
+                    <span style="font-size:12px; font-weight:normal;">(CSへ情報を送信)</span>
+                </button>
+                <br>
+                <div class="status-message" id="statusMsg"></div>
+                <button type="button" class="btn-copy" onclick="copyToClipboard()">
+                    📋 本文をコピーする (メールが起動しない場合:*****@gmail.comまで送信)
+                </button>
+                <p class="note">※ボタンを押すと、お使いのメールソフトが起動します。<br>内容を確認して送信ボタンを押してください。</p>
+            </div>
+        </form>
+
+        <div class="decision-info">
+            <span style="font-size: 1.2em;">⚠ ヘリ出動の可否は、受信後にフライトスタッフにより判断されます。</span>
+        </div>
+    </div>
+
+    <!-- STEP 3 & 4 (省略なし) -->
+    <div class="step-box">
+        <div class="step-header"><span class="step-num">3</span><span>CSへの電話連絡（送信確認）</span></div>
+        <p>メール送信後、直ちに<strong>施設間搬送用電話（CS）</strong>へ連絡し、「フォームを送信した」旨を伝えてください。フライトスタッフと搬送可否を検討します。</p>
+    </div>
+    <div class="arrow-down">⬇</div>
+    <div class="step-box" style="border-color: var(--accent);">
+        <div class="step-header" style="background: #ffebee; color: var(--accent);">
+            <span class="step-num" style="background: var(--accent);">4</span><span>引き継ぎ場所決定・119番要請</span>
+        </div>
+        <p>搬送が可能と連絡がありましたら、<strong>速やかに119番要請</strong>を行って以下の順に伝達してください。(FD用の紹介状写しと搬送中急変時に参照できるプリントされたキー画像があると助かります。)</p>
+        <div style="background: #fff; border: 1px dashed var(--accent); padding: 10px; margin-top: 10px; font-size:13px;">
+            <strong>【119番で伝えること】</strong>
+            <ul style="margin-left: 20px;">
+                <li>ドクターヘリによる施設間搬送であること</li>
+                <li>搬送元病院と搬送先病院名</li>
+                <li>指定された引き継ぎ場所（病院かランデブーポイントのどちらか）</li>
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+<!-- JavaScript Logic -->
+<script>
+    // ==========================================
+    // 【設定】管理者は以下のメールアドレスを変更してください
+    // ==========================================
+    const CONFIG = {
+        DESTINATION_EMAIL: "tkm0155tkm0730@gmail.com"
+    };
+
+    window.onload = function() {
+        populateSelect('bpSys', 40, 290, 120, 2);
+        populateSelect('bpDia', 20, 160, 80, 2);
+        populateSelect('hr', 20, 200, 80, 2);
+        populateSelect('spo2', 30, 100, 98, 1, true);
+        populateSelect('rr', 0, 60, 16, 1);
+        populateTempSelect();
+        
+        // 年齢セレクトボックス生成
+        populateAgeSelect();
+        
+        // 薬剤チェックボックスの監視
+        document.querySelectorAll('.drug-check').forEach(cb => {
+            cb.addEventListener('change', (e) => {
+                checkDrugCount();
+                toggleDrugInput(e.target);
+            });
+        });
+    };
+
+    // セレクトボックス生成ヘルパー
+    function populateSelect(id, min, max, defaultVal, step = 1, reverse = false) {
+        const select = document.getElementById(id);
+        const options = [];
+        for (let i = min; i <= max; i += step) options.push(i);
+        if (reverse) options.reverse();
+        options.forEach(val => {
+            const opt = document.createElement('option');
+            opt.value = val;
+            opt.textContent = val;
+            if (val === defaultVal) opt.selected = true;
+            select.appendChild(opt);
+        });
+    }
+
+    function populateTempSelect() {
+        const select = document.getElementById('temp');
+        const defaultVal = "36.5";
+        for (let i = 340; i <= 420; i++) {
+            const val = (i / 10).toFixed(1);
+            const opt = document.createElement('option');
+            opt.value = val;
+            opt.textContent = val;
+            if (val === defaultVal) opt.selected = true;
+            select.appendChild(opt);
+        }
+    }
+
+    // 年齢セレクトボックス生成 (0-120歳, 初期値50)
+    function populateAgeSelect() {
+        const select = document.getElementById('ptAge');
+        const defaultVal = 50;
+        for (let i = 0; i <= 120; i++) {
+            const opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = i;
+            if (i === defaultVal) opt.selected = true;
+            select.appendChild(opt);
+        }
+    }
+
+    // 付添人警告の表示切替
+    function toggleEscortWarning() {
+        const warning = document.getElementById('escortWarning');
+        const radios = document.getElementsByName('escort');
+        let val = "";
+        for(let r of radios) { if(r.checked) val = r.value; }
+        
+        if(val === "あり") {
+            warning.style.display = 'block';
+        } else {
+            warning.style.display = 'none';
+        }
+    }
+
+    // 呼吸器設定等の表示切り替え
+    function toggleRespSettings(mode) {
+        document.getElementById('panel-o2').classList.remove('active');
+        document.getElementById('panel-nppv').classList.remove('active');
+        document.getElementById('panel-vent').classList.remove('active');
+        
+        if (mode === 'o2') {
+            document.getElementById('panel-o2').classList.add('active');
+        } else if (mode === 'nppv') {
+            document.getElementById('panel-nppv').classList.add('active');
+        } else if (mode === 'vent') {
+            document.getElementById('panel-vent').classList.add('active');
+        }
+    }
+
+    // 薬剤入力欄の表示切替
+    function toggleDrugInput(checkbox) {
+        const item = checkbox.closest('.drug-item');
+        const inputArea = item.querySelector('.drug-input-area');
+        if (checkbox.checked) {
+            inputArea.style.display = 'flex';
+        } else {
+            inputArea.style.display = 'none';
+            // 入力値をクリア
+            const input = inputArea.querySelector('input');
+            if(input) input.value = '';
+        }
+    }
+
+    // 胸腔ドレーン設定の表示切替
+    function toggleDrainSelect() {
+        const chk = document.getElementById('chkDrain');
+        const select = document.getElementById('drainSetting');
+        if (chk.checked) {
+            select.style.display = 'inline-block';
+        } else {
+            select.style.display = 'none';
+            select.value = ""; // 値をクリア
+        }
+    }
+
+    // 薬剤カウント・警告
+    function checkDrugCount() {
+        const checks = document.querySelectorAll('.drug-check:checked');
+        const warning = document.getElementById('pumpWarning');
+        // メイン以外の薬剤が4剤以上選択された場合
+        if (checks.length >= 2) {
+            warning.style.display = 'block';
+        } else {
+            warning.style.display = 'none';
+        }
+    }
+
+    function getFormData() {
+        const getValue = (id) => document.getElementById(id).value || "";
+        const getRadioVal = (name) => {
+            const els = document.getElementsByName(name);
+            for(let el of els) if(el.checked) return el.value;
+            return "";
+        };
+
+        const now = new Date();
+        const dateStr = `${now.getFullYear()}/${now.getMonth()+1}/${now.getDate()} ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+        // === 基本情報 ===
+        const srcHosp = getValue('srcHospital');
+        const srcDept = getValue('srcDept');
+        const srcDr = getValue('srcDoctor');
+        
+        const dstHosp = getValue('dstHospital');
+        const dstDept = getValue('dstDept');
+        const dstDr = getValue('dstDoctor');
+
+        // === バイタル ===
+        const bpSys = getValue('bpSys');
+        const bpDia = getValue('bpDia');
+        const hr = getValue('hr');
+        const spo2 = getValue('spo2');
+        const rr = getValue('rr');
+        const consLevel = getValue('consciousLevel');
+        const vitalOther = getValue('vitalOther');
+        const temp = getValue('temp');
+
+        let vitalStr = `BP ${bpSys}/${bpDia}, HR ${hr}, SpO2 ${spo2}%\nRR ${rr}, KT ${temp}, 意識 ${consLevel}`;
+        if(vitalOther) vitalStr += ` (${vitalOther})`;
+
+        // === 呼吸 ===
+        let respInfo = getRadioVal('respMode');
+        if (respInfo === "酸素投与") {
+            const flow = getValue('o2Flow');
+            if(flow) respInfo += ` : ${flow}`;
+        } else if (respInfo === "NPPV") {
+            respInfo += `\n   Mode: ${getValue('nppvMode')}, FiO2: ${getValue('nppvFio2')}, IPAP: ${getValue('nppvIpap')}\n   EPAP: ${getValue('nppvEpap')}, f: ${getValue('nppvF')}`;
+        } else if (respInfo === "挿管・人工呼吸器") {
+            respInfo += `\n   Mode: ${getValue('ventMode')}, FiO2: ${getValue('ventFio2')}, PEEP: ${getValue('ventPeep')}\n   PS: ${getValue('ventPs')}, PI: ${getValue('ventPi')}, f: ${getValue('ventF')}`;
+        }
+
+        // === 循環・薬剤 ===
+        // メイン
+        let mainIv = getValue('mainIvType');
+        if (mainIv !== "なし") mainIv += ` (${getValue('mainIvRate')})`;
+        
+        // 昇圧剤・鎮静剤・その他
+        let drugs = [];
+        document.querySelectorAll('.drug-check:checked').forEach(cb => {
+            const name = cb.value;
+            // 対応する流量入力欄を探す
+            const row = cb.closest('.drug-item');
+            const rate = row.querySelector('.rate-input').value;
+            drugs.push(`${name} ${rate ? '('+rate+')' : ''}`);
+        });
+
+        // デバイス
+        let devInfo = [];
+        document.querySelectorAll('input[name="device"]:checked').forEach(cb => {
+            let val = cb.value;
+            // 胸腔ドレーンなら設定値を付加
+            if (val === "胸腔ドレーン") {
+                const setting = document.getElementById('drainSetting').value;
+                if (setting) val += ` (${setting})`;
+            }
+            devInfo.push(val);
+        });
+        const devOther = getValue('deviceOther');
+        if(devOther) devInfo.push(devOther);
+        
+        return `
+【ドクターヘリ施設間搬送要請】
+要請日時: ${dateStr}
+
+■搬送元
+医療機関: ${srcHosp}
+診療科: ${srcDept}
+担当医: ${srcDr}
+
+■搬送先
+医療機関: ${dstHosp}
+診療科: ${dstDept}
+担当医: ${dstDr}
+
+■患者情報
+年齢: ${getValue('ptAge')}歳
+性別: ${getRadioVal('ptGender')}
+付添人: ${getRadioVal('escort')}
+
+■病態情報
+診断名: ${getValue('diagnosis')}
+臨床経過: ${getValue('history')}
+
+■バイタルサイン
+${vitalStr}
+
+■呼吸管理
+${respInfo}
+
+■循環・薬剤
+メイン輸液: ${mainIv}
+使用薬剤: ${drugs.length > 0 ? drugs.join(', ') : 'なし'}
+
+■デバイス
+${devInfo.length > 0 ? devInfo.join(', ') : 'なし'}
+
+--------------------------------
+※本メールはWebフォームより自動生成されました。
+※送信後、必ずCSへ電話連絡をお願いします。
+        `.trim();
+    }
+
+    function generateAndSendMail() {
+        const bodyText = getFormData();
+        const subject = encodeURIComponent("【施設間搬送要請】Webフォームより送信");
+        const body = encodeURIComponent(bodyText);
+        const mailtoLink = `mailto:${CONFIG.DESTINATION_EMAIL}?subject=${subject}&body=${body}`;
+        window.location.href = mailtoLink;
+        document.getElementById('statusMsg').innerText = "メールソフトを起動しました。送信ボタンを押してください。";
+    }
+
+    function copyToClipboard() {
+        const bodyText = getFormData();
+        navigator.clipboard.writeText(bodyText).then(() => {
+            alert("コピーしました。メール本文に貼り付けてください。");
+            document.getElementById('statusMsg').innerText = "本文をコピーしました。";
+        }).catch(err => {
+            alert("コピーに失敗しました。");
+        });
+    }
+</script>
+
+</body>
+</html>
