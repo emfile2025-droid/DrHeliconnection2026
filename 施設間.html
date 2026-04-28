@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>鹿児島県ドクターヘリ 施設間搬送要請フォーム</title>
-<meta name="robots" content="noindex, nofollow">
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
 
@@ -406,6 +405,185 @@
     }
     .red-text { color: var(--accent); }
 
+    /* PC表示: 横幅を使って一画面で入力しやすくする */
+    @media (min-width: 1100px) {
+        body {
+            padding: 8px;
+            font-size: 13px;
+        }
+
+        .container {
+            max-width: 1500px;
+            padding: 14px;
+        }
+
+        header {
+            padding-bottom: 6px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        .subtitle {
+            font-size: 12px;
+        }
+
+        .step-box {
+            padding: 8px;
+            margin-bottom: 8px;
+        }
+
+        .step-header {
+            padding: 4px 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .step-num {
+            width: 22px;
+            height: 22px;
+            font-size: 13px;
+        }
+
+        .arrow-down {
+            display: none;
+        }
+
+        #heliRequestForm {
+            display: grid;
+            grid-template-columns: 0.95fr 1fr 1.15fr;
+            gap: 8px;
+            align-items: start;
+        }
+
+        #heliRequestForm > .form-section {
+            margin-bottom: 0;
+            padding: 8px;
+        }
+
+        #heliRequestForm > .form-section:nth-of-type(1) {
+            grid-column: 1;
+            grid-row: 1;
+        }
+
+        #heliRequestForm > .form-section:nth-of-type(2) {
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+        #heliRequestForm > .form-section:nth-of-type(3) {
+            grid-column: 2;
+            grid-row: 1 / span 2;
+        }
+
+        #heliRequestForm > .form-section:nth-of-type(4) {
+            grid-column: 3;
+            grid-row: 1 / span 2;
+        }
+
+        #heliRequestForm > .action-area {
+            grid-column: 1 / -1;
+            margin-top: 0;
+            padding: 8px;
+        }
+
+        .section-title {
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .form-section,
+        .form-row,
+        .input-wrapper,
+        .vital-row,
+        .drug-category {
+            margin-bottom: 6px;
+        }
+
+        .form-row,
+        .vital-row {
+            gap: 8px;
+        }
+
+        label {
+            font-size: 11px;
+            margin-bottom: 2px;
+        }
+
+        input[type="text"], input[type="number"], select, textarea {
+            padding: 5px;
+            font-size: 12px;
+        }
+
+        textarea {
+            height: 46px;
+        }
+
+        .input-wrapper {
+            padding: 6px;
+        }
+
+        .selection-group {
+            gap: 5px;
+        }
+
+        .check-label {
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        .vital-wrapper {
+            padding: 8px;
+        }
+
+        .vital-item {
+            min-width: 78px;
+        }
+
+        .drug-list {
+            gap: 6px;
+        }
+
+        .drug-grid {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 4px;
+        }
+
+        .drug-item {
+            padding: 3px 5px;
+            font-size: 12px;
+        }
+
+        .rate-input {
+            height: 24px;
+            font-size: 11px !important;
+        }
+
+        .detail-panel {
+            padding: 6px;
+            margin-top: 4px;
+            font-size: 12px;
+        }
+
+        .btn-send {
+            padding: 8px 32px;
+            font-size: 14px;
+        }
+
+        .btn-copy {
+            margin-top: 4px;
+        }
+
+        .decision-info {
+            margin-top: 8px;
+            padding: 6px;
+            font-size: 13px;
+        }
+    }
+
     @media print {
         body { padding: 0; background: white; }
         .container { box-shadow: none; padding: 0; max-width: 100%; }
@@ -434,7 +612,16 @@
         </div>
         <div style="padding-left: 10px;">
             <p style="font-size:14px;">まず搬送元医療機関から搬送先医療機関へ連絡し、<strong>「受け入れ受諾」</strong>を得てください。</p>
+            <p class="red-text" style="font-size: 12px; margin-top: 5px;">※搬送先施設にヘリポートがない場合は、搬送元施設が搬送先病院に着陸後の搬送手段について病院搬送車か消防搬送か必ず確認してください。</p>
             <p class="red-text" style="font-size: 12px; margin-top: 5px;">※ドクターヘリ本部（CS）ではベッド調整は行いません。</p>
+            <div style="margin-top: 10px; border: 1px solid #f5c6cb; padding: 8px; border-radius: 4px; background: #fff5f5;">
+                <label style="color:#721c24; font-weight:bold; display:block; margin-bottom:6px;">市内ヘリポート → 搬送先施設の搬送手段</label>
+                <p style="font-size:12px; color:#721c24; margin-bottom:6px;">搬送先施設にヘリポートがない場合は、搬送先病院へ着陸後の搬送手段を必ず確認してください。</p>
+                <div class="selection-group">
+                    <label class="check-label"><input type="radio" name="cityHelipadTransfer" value="病院搬送車迎え"> 病院搬送車迎え</label>
+                    <label class="check-label"><input type="radio" name="cityHelipadTransfer" value="消防救急車要請"> 消防救急車要請</label>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -447,7 +634,7 @@
             <span>患者情報の入力・送信（CSへ連絡）</span>
         </div>
         
-        <p style="margin-bottom: 12px; font-size: 13px;">以下の情報を入力し、「メール作成」ボタンを押してください。患者氏名や住所など個人を特定しうる情報は記入しないでください。</p>
+        <p style="margin-bottom: 12px; font-size: 13px;">以下の情報を入力し、「メール作成」ボタンを押してください。患者氏名、住所、患者ID、電話番号など、個人を特定しうる情報は記入しないでください。</p>
 
         <form id="heliRequestForm">
             <!-- ① 搬送元・搬送先情報 -->
@@ -491,6 +678,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <!-- ② 患者基本属性 -->
@@ -832,7 +1020,7 @@
                 <br>
                 <div class="status-message" id="statusMsg"></div>
                 <button type="button" class="btn-copy" onclick="copyToClipboard()">
-                    📋 本文をコピーする (メールが起動しない場合:kch.densou@gmail.comまで送信)
+                    📋 本文をコピーする (メールが起動しない場合:*****@gmail.comまで送信)
                 </button>
                 <p class="note">※ボタンを押すと、お使いのメールソフトが起動します。<br>内容を確認して送信ボタンを押してください。</p>
             </div>
@@ -872,7 +1060,7 @@
     // 【設定】管理者は以下のメールアドレスを変更してください
     // ==========================================
     const CONFIG = {
-        DESTINATION_EMAIL: "kch.densou@gmail.com"
+        DESTINATION_EMAIL: "tkm0155tkm0730@gmail.com"
     };
 
     window.onload = function() {
@@ -1022,6 +1210,7 @@
         const dstHosp = getValue('dstHospital');
         const dstDept = getValue('dstDept');
         const dstDr = getValue('dstDoctor');
+        const cityHelipadTransfer = getRadioVal('cityHelipadTransfer') || "未選択";
 
         // === バイタル ===
         const bpSys = getValue('bpSys');
@@ -1089,6 +1278,7 @@
 医療機関: ${dstHosp}
 診療科: ${dstDept}
 担当医: ${dstDr}
+市内ヘリポート→搬送先施設: ${cityHelipadTransfer}
 
 ■患者情報
 年齢: ${getValue('ptAge')}歳
@@ -1119,6 +1309,11 @@ ${devInfo.length > 0 ? devInfo.join(', ') : 'なし'}
     }
 
     function generateAndSendMail() {
+        const confirmed = confirm(
+            "患者氏名、住所、患者ID、電話番号など、個人を特定しうる情報を入力していないことを確認しましたか？\n\n問題なければメール作成画面を起動します。"
+        );
+        if (!confirmed) return;
+
         const bodyText = getFormData();
         const subject = encodeURIComponent("【施設間搬送要請】Webフォームより送信");
         const body = encodeURIComponent(bodyText);
@@ -1139,6 +1334,4 @@ ${devInfo.length > 0 ? devInfo.join(', ') : 'なし'}
 </script>
 
 </body>
-
 </html>
-
