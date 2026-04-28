@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>【2026年運用対応】鹿児島県ドクターヘリ 施設間搬送要請ポータル</title>
-<meta name="description" content="【2026年運用対応】鹿児島県ドクターヘリおよび基地病院救急科への施設間搬送要請ポータルサイト。医療従事者専用ログインページ。">
+<title>鹿児島県ドクターヘリ 施設間搬送要請ポータル</title>
+<meta name="description" content="鹿児島県ドクターヘリおよび基地病院救急科への施設間搬送要請ポータルサイト。鹿児島県内の施設間搬送・ドクターヘリ要請入口です。医療従事者専用ログインページ。">
 <meta name="robots" content="index, follow">
 
 <meta property="og:title" content="鹿児島県ドクターヘリ要請ポータル (医療従事者専用)">
-<meta property="og:site_name" content="鹿児島県ドクターヘリ要請ポータル" />
 <meta property="og:type" content="website">
 <meta property="og:description" content="施設間搬送要請フォームへのアクセスには認証コードが必要です。">
 <meta property="og:image" content="20260101heli.png">
@@ -63,6 +62,17 @@
         background: #000;
         border-radius: 4px;
         margin-right: 12px;
+    }
+
+    .logo-kicker {
+        font-size: 11px;
+        color: #666;
+        line-height: 1.2;
+        margin-bottom: 2px;
+    }
+
+    .logo-title {
+        line-height: 1.35;
     }
 
     .menu-link {
@@ -127,14 +137,14 @@
 
     /* 認証カード */
     .auth-card {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        background: rgba(6, 18, 34, 0.68);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.24);
         padding: 40px;
         border-radius: 16px;
         width: 100%;
         max-width: 480px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
         transition: transform 0.3s;
     }
     
@@ -185,47 +195,15 @@
 
     @media (max-width: 768px) { .hero-title { font-size: 1.8rem; } }
 </style>
-<meta name="google-site-verification" content="SAfWGcaAuniuNxOHUBZx8jZ5XSa2bDAikIs3uNcOQ38" />
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "鹿児島県ドクターヘリ 施設間搬送要請ポータル",
-  "url": "https://emfile2025-droid.github.io/DrHeliconnection2026/",
-  "description": "鹿児島県ドクターヘリおよび基地病院への施設間搬送要請を、PC・スマホから即座に作成できる入力支援ツール。2026年最新運用対応。",
-  "applicationCategory": "MedicalApplication",
-  "operatingSystem": "All",
-  "browserRequirements": "Requires JavaScript. HTML5 capable browser.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "JPY"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "鹿児島県ドクターヘリ 基地病院救急科（非公式開発チーム）"
-  }
-}
-</script>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "鹿児島県ドクヘリ搬送ポータル",
-  "url": "https://emfile2025-droid.github.io/DrHeliconnection2026/"
-}
-</script>
-
 </head>
 <body>
 
 <header>
     <a href="index.html" class="site-logo">
-        <img src="heli_illust.png" alt="Logo" class="logo-img">
+        <img src="heli_illust.png" alt="鹿児島県ドクターヘリ基地病院ロゴ" class="logo-img">
         <div>
-            <div style="font-size:11px; color:#666;">DocHeli Portal</div>
-            鹿児島県ドクターヘリ基地病院
+            <div class="logo-kicker">施設間搬送要請支援</div>
+            <div class="logo-title">鹿児島県ドクターヘリ基地病院</div>
         </div>
     </a>
     <nav>
@@ -242,7 +220,7 @@
 
     <div class="hero-content">
         <h1 class="hero-title">施設間搬送要請ポータル</h1>
-        <p class="hero-subtitle">Authorized Personnel Access Only</p>
+        <p class="hero-subtitle">鹿児島県内の医療機関向け<br>施設間搬送・ドクターヘリ要請入口</p>
 
         <div class="auth-card">
             <div class="auth-title">🔒 関係者認証 (Medical Auth)</div>
@@ -251,9 +229,9 @@
             </p>
             
             <div class="passcode-area">
-                <input type="password" id="passcodeInput" class="passcode-input" placeholder="Passcode" onkeypress="handleEnter(event)">
-                <div id="errorMsg" class="error-msg">⚠ パスコードが間違っています</div>
-                <button type="button" class="btn-unlock" onclick="checkPasscode()">認証して進む ➜</button>
+                <input type="password" id="passcodeInput" class="passcode-input" placeholder="Passcode" aria-label="共有パスコード" aria-describedby="errorMsg" autocomplete="off" inputmode="numeric">
+                <div id="errorMsg" class="error-msg" aria-live="polite">⚠ パスコードが間違っています</div>
+                <button type="button" id="unlockButton" class="btn-unlock">認証して進む ➜</button>
             </div>
         </div>
 
@@ -263,24 +241,34 @@
 <footer>
     <div>&copy; 2026 Kagoshima Doctor Heli Base Hospital</div>
     <div style="margin-top:5px;">
-        <a href="利用規約.html">利用規約</a> | 
-        <a href="利用規約.html">プライバシーポリシー</a>
+        <a href="利用規約.html#terms">利用規約</a> | 
+        <a href="利用規約.html#privacy">プライバシーポリシー</a> | 
+        <a href="利用規約.html#security">セキュリティ指針</a>
     </div>
 </footer>
 
 <script>
     // ==========================================
-    // 【設定】パスコード設定 (初期値: 9999)
+    // 【設定】パスコード照合
     // ==========================================
-    const SECRET_CODE = "9999"; 
+    const SECRET_HASH = "888df25ae35772424a560c7152a1de794440e0ea5cfee62828333a456a506e05";
     const LINK_URL = "施設間.html";
 
-    function checkPasscode() {
+    async function sha256Hex(text) {
+        const data = new TextEncoder().encode(text);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        return Array.from(new Uint8Array(hashBuffer))
+            .map(byte => byte.toString(16).padStart(2, '0'))
+            .join('');
+    }
+
+    async function checkPasscode() {
         const input = document.getElementById('passcodeInput');
         const error = document.getElementById('errorMsg');
-        const btn = document.querySelector('.btn-unlock');
+        const btn = document.getElementById('unlockButton');
+        const inputHash = await sha256Hex(input.value);
 
-        if (input.value === SECRET_CODE) {
+        if (inputHash === SECRET_HASH) {
             // 正解
             error.style.display = 'none';
             input.style.borderColor = '#4caf50';
@@ -300,7 +288,10 @@
         }
     }
 
-    function handleEnter(e) { if(e.key === 'Enter') checkPasscode(); }
+    document.getElementById('unlockButton').addEventListener('click', checkPasscode);
+    document.getElementById('passcodeInput').addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') checkPasscode();
+    });
 </script>
 
 </body>
