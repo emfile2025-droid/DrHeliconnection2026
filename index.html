@@ -3,14 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>鹿児島県ドクターヘリ 施設間搬送要請ポータル</title>
-<meta name="description" content="鹿児島県ドクターヘリおよび基地病院救急科への施設間搬送要請ポータルサイト。鹿児島県内の施設間搬送・ドクターヘリ要請入口です。医療従事者専用ログインページ。">
+<title>鹿児島県ドクターヘリ 施設間搬送要請ポータル | 医療機関向け</title>
+<meta name="description" content="鹿児島県内の医療機関向けに、ドクターヘリによる施設間搬送要請の入口を案内するポータルサイトです。搬送元医療機関、搬送先医療機関、県外医療従事者が要請手順を確認できます。">
+<meta name="keywords" content="鹿児島県, ドクターヘリ, ドクヘリ, 施設間搬送, 医療機関向け, 搬送元医療機関, 搬送先医療機関, 要請手順">
 <meta name="robots" content="index, follow">
 
-<meta property="og:title" content="鹿児島県ドクターヘリ要請ポータル (医療従事者専用)">
+<meta property="og:title" content="鹿児島県ドクターヘリ 施設間搬送要請ポータル (医療従事者専用)">
 <meta property="og:type" content="website">
-<meta property="og:description" content="施設間搬送要請フォームへのアクセスには認証コードが必要です。">
+<meta property="og:description" content="鹿児島県内の医療機関向けに、施設間搬送・ドクターヘリ要請の入口と手順を案内します。">
 <meta property="og:image" content="20260101heli.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": "鹿児島県ドクターヘリ 施設間搬送要請ポータル",
+  "alternateName": [
+    "鹿児島県ドクヘリ施設間搬送",
+    "鹿児島ドクヘリ要請入口",
+    "鹿児島県ドクヘリ"
+  ],
+  "description": "鹿児島県内の医療機関向けに、ドクターヘリによる施設間搬送要請の入口と要請手順を案内するページです。",
+  "audience": {
+    "@type": "MedicalAudience",
+    "audienceType": "医療従事者"
+  },
+  "about": [
+    "鹿児島県",
+    "ドクターヘリ",
+    "施設間搬送",
+    "搬送元医療機関",
+    "搬送先医療機関",
+    "要請手順"
+  ]
+}
+</script>
 
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -171,6 +198,28 @@
         display: none; margin-top: 5px; text-shadow: 0 1px 2px rgba(0,0,0,0.8);
     }
 
+    .portal-info {
+        margin-top: 22px;
+        padding: 18px 22px;
+        width: 100%;
+        max-width: 720px;
+        background: rgba(255, 255, 255, 0.9);
+        color: var(--text-main);
+        border-radius: 12px;
+        text-align: left;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+
+    .portal-info h2 {
+        color: var(--accent-blue);
+        font-size: 18px;
+        margin-bottom: 8px;
+    }
+
+    .portal-info p {
+        font-size: 13px;
+    }
+
     /* ボタンのみ版のデザイン（コメントアウト中） */
     .glass-card {
         display: flex; flex-direction: column; align-items: center;
@@ -193,7 +242,10 @@
     }
     footer a { color: rgba(255,255,255,0.9); text-decoration: none; margin: 0 10px; }
 
-    @media (max-width: 768px) { .hero-title { font-size: 1.8rem; } }
+    @media (max-width: 768px) {
+        .hero-title { font-size: 1.8rem; }
+        .portal-info { padding: 14px; }
+    }
 </style>
 </head>
 <body>
@@ -219,7 +271,7 @@
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
-        <h1 class="hero-title">施設間搬送要請ポータル</h1>
+        <h1 class="hero-title">鹿児島県ドクターヘリ 施設間搬送要請ポータル</h1>
         <p class="hero-subtitle">鹿児島県内の医療機関向け<br>施設間搬送・ドクターヘリ要請入口</p>
 
         <div class="auth-card">
@@ -234,6 +286,13 @@
                 <button type="button" id="unlockButton" class="btn-unlock">認証して進む ➜</button>
             </div>
         </div>
+
+        <section class="portal-info" aria-labelledby="portalInfoTitle">
+            <h2 id="portalInfoTitle">鹿児島県内の施設間搬送・ドクターヘリ要請について</h2>
+            <p>
+                本ページは、鹿児島県内の搬送元医療機関・搬送先医療機関および県外医療従事者が、ドクターヘリによる施設間搬送要請の入口と要請手順を確認するための案内ページです。搬送要請フォームへ進むには、関係者向けの共有パスコードが必要です。
+            </p>
+        </section>
 
         </div>
 </section>
